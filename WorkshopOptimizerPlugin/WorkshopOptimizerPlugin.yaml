@@ -1,8 +1,14 @@
-name: Workshop Optimizer Plugin
+name: 開拓工坊排程
 author: HappySprite
-description: Use /wso after you visited your island.
-punchline: Optimize Island Sanctuary Workshop orders.
-repo_url: https://github.com/belzaru17/WorkshopOptimizerPlugin
+internal_name: WorkshopOptimizerPlugin
+dalamud_api_level: 13
+description: |-
+  到自己的無人島，打開工坊生產計畫或海島產品需求調查後輸入 /wso。
+  這個組建給台灣版用戶端：yanmucorp Dalamud API 13、.NET 9、XIVTCLauncher。
+  不要裝到官方 Dalamud API 14／15。
+  上游是 belzaru17/WorkshopOptimizerPlugin，作者 HappySprite。本分支為 pollyhaei-ai/WorkshopOptimizerPlugin。
+punchline: 幫開拓無人島的工坊排生產計畫。
+repo_url: https://github.com/pollyhaei-ai/WorkshopOptimizerPlugin
 icon_url: https://raw.githubusercontent.com/belzaru17/WorkshopOptimizerPlugin/main/Images/icon.png
 image_urls:
    - https://raw.githubusercontent.com/belzaru17/WorkshopOptimizerPlugin/main/Images/image1.png

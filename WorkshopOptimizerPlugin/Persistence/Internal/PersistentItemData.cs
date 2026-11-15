@@ -8,7 +8,7 @@ internal class PersistentItemData
     public string Name { get; set; }
     public ItemDynamicData Data { get; set; }
 
-    public PersistentItemData() : this(0, "UNKNOWN") { }
+    public PersistentItemData() : this(0, "未知") { }
 
     public PersistentItemData(ItemStaticData staticData, ItemDynamicData data) : this(staticData.Id, staticData.Name, data) { }
 

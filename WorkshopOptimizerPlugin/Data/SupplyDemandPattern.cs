@@ -17,7 +17,7 @@ internal class SupplyDemandPattern
         DemandPattern = demandPattern;
     }
 
-    public string Name => "C" + (Cycle + 1) + (Strong ? "S" : "W");
+    public string Name => "第" + (Cycle + 1) + "日" + (Strong ? "強" : "弱");
 
     public static readonly SupplyDemandPattern[] PatternsTable = {
         new SupplyDemandPattern(1, false,

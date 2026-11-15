@@ -8,12 +8,12 @@ internal class GranaryItemData
 
     public static readonly GranaryItemData[] Items = new GranaryItemData[]
     {
-        new GranaryItemData(20 /* Growth Formula */, "Alyssum", "Meandering Meadows"),
-        new GranaryItemData(21 /* Garnet Rapier */, "Raw Garnet", "Fatal Falls"),
-        new GranaryItemData(22 /* Spruce Round Shield */, "Spruce Log", "Wild Woods"),
-        new GranaryItemData(23 /* Shark Oil */, "Hammerhead", "Bending Beaches"),
-        new GranaryItemData(24 /* Silver Ear Cuffs */, "Silver Ore", "Mossy Mountains"),
-        new GranaryItemData(64 /* Bouillabaisse */, "Cave Shrimp", "Crumbling Caverns"),
+        new GranaryItemData(20 /* 開拓工坊植物成長劑 */, "無人島香薺", "草原"),
+        new GranaryItemData(21 /* 海島石榴石刺劍 */, "無人島石榴石原石", "溪流"),
+        new GranaryItemData(22 /* 海島雲杉圓盾 */, "無人島雲杉原木", "森林"),
+        new GranaryItemData(23 /* 開拓工坊鯊油 */, "無人島錘頭鯊", "沙灘"),
+        new GranaryItemData(24 /* 海島白銀耳夾 */, "無人島銀礦", "山"),
+        new GranaryItemData(64 /* 開拓工坊五海雜燴湯 */, "無人島長臂蝦", "洞窟"),
     };
 
     private GranaryItemData(uint id, string component, string mission)

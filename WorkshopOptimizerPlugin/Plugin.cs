@@ -9,7 +9,7 @@ namespace WorkshopOptimizerPlugin;
 
 public sealed class Plugin : IDalamudPlugin
 {
-    public static string Name => "Workshop Optimizer Plugin";
+    public static string Name => "開拓工坊排程";
 
     public Configuration Configuration { get; init; }
     public WindowSystem WindowSystem = new("WorkshopOptimizerPlugin");
@@ -57,7 +57,7 @@ public sealed class Plugin : IDalamudPlugin
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Optimize the workshop"
+            HelpMessage = "開啟開拓工坊生產計畫"
         });
 
         PluginInterface.UiBuilder.Draw += DrawUI;

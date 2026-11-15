@@ -15,7 +15,7 @@ internal static class WhenUtils
 {
     public static readonly string[] WhenAsStrings = new string[]
     {
-        When.Never.ToString(), When.Weak.ToString(), When.Strong.ToString(),
-        When.Either.ToString(), When.Always.ToString(), When.Required.ToString(),
+        Zh.When(When.Never), Zh.When(When.Weak), Zh.When(When.Strong),
+        Zh.When(When.Either), Zh.When(When.Always), Zh.When(When.Required),
     };
 }

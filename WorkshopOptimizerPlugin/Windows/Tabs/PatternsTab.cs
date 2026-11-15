@@ -30,12 +30,12 @@ internal class PatternsTab : ITab
 
         if (ImGui.BeginTable("Patterns", 6, ImGuiTableFlags.ScrollY | ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthFixed, 200);
-            ImGui.TableSetupColumn("Cycle", ImGuiTableColumnFlags.WidthFixed, 80);
-            ImGui.TableSetupColumn("Expected Supply", ImGuiTableColumnFlags.WidthFixed, 200);
-            ImGui.TableSetupColumn("Popularity", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.WidthFixed, 150);
-            ImGui.TableSetupColumn("Grooved Value", ImGuiTableColumnFlags.WidthFixed, 150);
+            ImGui.TableSetupColumn("產品", ImGuiTableColumnFlags.WidthFixed, 240);
+            ImGui.TableSetupColumn("型態", ImGuiTableColumnFlags.WidthFixed, 90);
+            ImGui.TableSetupColumn("預期市場需求", ImGuiTableColumnFlags.WidthFixed, 220);
+            ImGui.TableSetupColumn("受歡迎度", ImGuiTableColumnFlags.WidthFixed, 110);
+            ImGui.TableSetupColumn("產值", ImGuiTableColumnFlags.WidthFixed, 150);
+            ImGui.TableSetupColumn("含氣勢產值", ImGuiTableColumnFlags.WidthFixed, 150);
             ImGui.TableHeadersRow();
 
             var itemCache = ifData.IsCurrentSeason()? uiDataSource.CurrentItemCache : uiDataSource.PreviousItemCache;
@@ -69,14 +69,14 @@ internal class PatternsTab : ITab
                 var actualSupply = item.Supply[cycle];
                 if (actualSupply == Supply.Unknown || actualSupply == expectedSupply)
                 {
-                    ImGui.Text(expectedSupply.ToString());
+                    ImGui.Text(Zh.Supply(expectedSupply));
                 }
                 else
                 {
-                    ImGui.TextColored(new Vector4(0.75f, 0.5f, 0, 1), $"{expectedSupply} (Actual: {actualSupply})");
+                    ImGui.TextColored(new Vector4(0.75f, 0.5f, 0, 1), $"{Zh.Supply(expectedSupply)}（實際：{Zh.Supply(actualSupply)}）");
                 }
                 ImGui.TableNextColumn();
-                ImGui.Text(item.Popularity.ToString());
+                ImGui.Text(Zh.Popularity(item.Popularity));
                 ImGui.TableNextColumn();
                 var effValue = item.EffectiveValue(cycle);
                 ImGui.Text(string.Format("{0:F2}", effValue));

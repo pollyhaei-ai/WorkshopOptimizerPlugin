@@ -40,7 +40,7 @@ internal class ProducedTab : ITab
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 200);
         for (var i = 0; i < Constants.MaxWorkshops; i++)
         {
-            ImGui.TableSetupColumn($"Workshop {i+1}", ImGuiTableColumnFlags.WidthFixed, 280);
+            ImGui.TableSetupColumn($"開拓工坊 {i+1}", ImGuiTableColumnFlags.WidthFixed, 320);
         }
         ImGui.TableHeadersRow();
 
@@ -57,7 +57,7 @@ internal class ProducedTab : ITab
         {
             ImGui.TableNextRow(ImGuiTableRowFlags.None, 27);
             ImGui.TableSetColumnIndex(0);
-            ImGui.Text($"Step {step + 1}");
+            ImGui.Text($"步驟 {step + 1}");
             for (var w = 0; w < Constants.MaxWorkshops; w++)
             {
                 if ((step > 0) && (producedItems[cycle, w, step - 1] < 0)) { continue; }
@@ -127,7 +127,7 @@ internal class ProducedTab : ITab
                     hours[w] += thisItem.Hours;
 
                     ImGui.SameLine();
-                    ImGui.Text($"{thisItem.Hours}hs ");
+                    ImGui.Text($"{thisItem.Hours}小時 ");
 
                     var (pattern, some) = thisItem.FindPattern(cycle);
                     ImGui.SameLine();
@@ -140,12 +140,12 @@ internal class ProducedTab : ITab
         ImGui.TableNextRow(ImGuiTableRowFlags.Headers, 27);
         ImGui.TableSetColumnIndex(0);
         ImGui.SetNextItemWidth(200);
-        ImGui.Text("Hours");
+        ImGui.Text("小時");
         for (var w = 0; w < Constants.MaxWorkshops; w++)
         {
             ImGui.TableSetColumnIndex(w + 1);
             ImGui.SetNextItemWidth(200);
-            ImGui.Text($"{hours[w]}hs");
+            ImGui.Text($"{hours[w]}小時");
         }
 
         var itemSets = new ItemSet[Constants.MaxWorkshops];
@@ -157,7 +157,7 @@ internal class ProducedTab : ITab
         ImGui.TableNextRow(ImGuiTableRowFlags.Headers, 27);
         ImGui.TableSetColumnIndex(0);
         ImGui.SetNextItemWidth(200);
-        ImGui.Text("Base Value");
+        ImGui.Text("基礎銷售價");
         for (var w = 0; w < Constants.MaxWorkshops; w++)
         {
             ImGui.TableSetColumnIndex(w + 1);
@@ -168,7 +168,7 @@ internal class ProducedTab : ITab
         ImGui.TableNextRow(ImGuiTableRowFlags.Headers, 27);
         ImGui.TableSetColumnIndex(0);
         ImGui.SetNextItemWidth(200);
-        ImGui.Text("Value");
+        ImGui.Text("產值");
         for (var w = 0; w < Constants.MaxWorkshops; w++)
         {
             ImGui.TableSetColumnIndex(w + 1);
@@ -180,7 +180,7 @@ internal class ProducedTab : ITab
         ImGui.TableNextRow(ImGuiTableRowFlags.Headers, 27);
         ImGui.TableSetColumnIndex(0);
         ImGui.SetNextItemWidth(200);
-        ImGui.Text("Total Value");
+        ImGui.Text("合計產值");
         ImGui.TableNextColumn();
         ImGui.Text($"{workshopItemSets.EffectiveValue:F2}");
 
@@ -191,12 +191,12 @@ internal class ProducedTab : ITab
     {
         if (!ImGui.BeginTable("Materials", 6)) { return; }
 
-        ImGui.TableSetupColumn("Gatherable Material", ImGuiTableColumnFlags.WidthFixed, 200);
-        ImGui.TableSetupColumn("Amount", ImGuiTableColumnFlags.WidthFixed, 100);
+        ImGui.TableSetupColumn("開拓素材", ImGuiTableColumnFlags.WidthFixed, 240);
+        ImGui.TableSetupColumn("數量", ImGuiTableColumnFlags.WidthFixed, 80);
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 50);
-        ImGui.TableSetupColumn("Rare Material", ImGuiTableColumnFlags.WidthFixed, 200);
-        ImGui.TableSetupColumn("Source", ImGuiTableColumnFlags.WidthFixed, 150);
-        ImGui.TableSetupColumn("Amount", ImGuiTableColumnFlags.WidthFixed, 100);
+        ImGui.TableSetupColumn("稀少素材", ImGuiTableColumnFlags.WidthFixed, 240);
+        ImGui.TableSetupColumn("來源", ImGuiTableColumnFlags.WidthFixed, 140);
+        ImGui.TableSetupColumn("數量", ImGuiTableColumnFlags.WidthFixed, 80);
         ImGui.TableHeadersRow();
 
         var itemCache = ifData.IsCurrentSeason() ? uiDataSource.CurrentItemCache : uiDataSource.PreviousItemCache;
@@ -241,7 +241,7 @@ internal class ProducedTab : ITab
                 ImGui.TableSetColumnIndex(3);
                 ImGui.Text(it.Key.Name);
                 ImGui.TableNextColumn();
-                ImGui.Text(it.Key.Source.ToString());
+                ImGui.Text(Zh.Source(it.Key.Source));
                 ImGui.TableNextColumn();
                 ImGui.Text(it.Value.ToString());
             }

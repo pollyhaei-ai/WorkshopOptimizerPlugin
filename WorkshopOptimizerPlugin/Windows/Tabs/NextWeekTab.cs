@@ -24,10 +24,10 @@ internal class NextWeekTab : ITab
         ImGui.Spacing();
         if (ImGui.BeginTable("Next Week's Items", 4, ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Item");
-            ImGui.TableSetupColumn("Next Week Popularity");
-            ImGui.TableSetupColumn("Granary Item");
-            ImGui.TableSetupColumn("Granary Mission");
+            ImGui.TableSetupColumn("產品");
+            ImGui.TableSetupColumn("下週期受歡迎度");
+            ImGui.TableSetupColumn("稀少開拓素材");
+            ImGui.TableSetupColumn("探索目的地");
             ImGui.TableHeadersRow();
 
             var gItems = new List<Tuple<GranaryItemData, Item>>();
@@ -42,7 +42,7 @@ internal class NextWeekTab : ITab
                 ImGui.TableSetColumnIndex(0);
                 ImGui.Text(i.Item2.Name);
                 ImGui.TableNextColumn();
-                ImGui.Text(i.Item2.NextPopularity.ToString());
+                ImGui.Text(Zh.Popularity(i.Item2.NextPopularity));
                 ImGui.TableNextColumn();
                 ImGui.Text(i.Item1.Component);
                 ImGui.TableNextColumn();

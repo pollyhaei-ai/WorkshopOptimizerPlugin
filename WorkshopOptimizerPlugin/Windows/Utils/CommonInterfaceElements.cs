@@ -76,33 +76,33 @@ internal class CommonInterfaceElements
     public void DrawBasicControls()
     {
         ImGui.SetNextItemWidth(100);
-        ImGui.Combo(UIUtils.LeftAlignedLabel("Season:"), ref mSeason, new string[] { "Current", "Previous" }, 2);
+        ImGui.Combo(UIUtils.LeftAlignedLabel("週期："), ref mSeason, new string[] { "本週期", "上週期" }, 2);
         ImGui.SameLine();
         ImGui.SetNextItemWidth(100);
-        ImGui.InputInt(UIUtils.LeftAlignedLabel("Cycle:"), ref mCycle, 1);
+        ImGui.InputInt(UIUtils.LeftAlignedLabel("生產日："), ref mCycle, 1);
         ImGui.SameLine();
-        ImGui.Text(string.Format("Groove: {0} -> {1}", GetStartGroove(), GetEndGroove())); ;
+        ImGui.Text(string.Format("氣勢：{0} → {1}", GetStartGroove(), GetEndGroove()));
     }
 
     public void DrawFilteringControls()
     {
         ImGui.SetNextItemWidth(100);
-        ImGui.InputInt(UIUtils.LeftAlignedLabel("Top-N:"), ref mTop, 5);
+        ImGui.InputInt(UIUtils.LeftAlignedLabel("顯示筆數："), ref mTop, 5);
         ImGui.SameLine();
-        if (ImGui.BeginPopupModal("Optimizer Settings"))
+        if (ImGui.BeginPopupModal("排程條件"))
         {
-            ImGui.SetWindowSize(new Vector2(350, 380));
-            ImGui.CheckboxFlags("Allow items on any cycle", ref mNewStrictness, (int)Strictness.AllowAnyCycle);
+            ImGui.SetWindowSize(new Vector2(560, 420));
+            ImGui.CheckboxFlags("允許任意生產日的產品", ref mNewStrictness, (int)Strictness.AllowAnyCycle);
             var any_cycle = (mNewStrictness & (int)Strictness.AllowAnyCycle) != 0;
             if (any_cycle) ImGui.BeginDisabled();
-            ImGui.CheckboxFlags("Allow items that peak on this cycle", ref mNewStrictness, (int)Strictness.AllowSameCycle);
-            ImGui.CheckboxFlags("Allow items that peak on rest cycles", ref mNewStrictness, (int)Strictness.AllowRestCycles);
-            ImGui.CheckboxFlags("Allow items that peaked on earlier cycles", ref mNewStrictness, (int)Strictness.AllowEarlierCycles);
-            ImGui.CheckboxFlags("Allow items that may peak on other cycles", ref mNewStrictness, (int)Strictness.AllowMultiCycle);
+            ImGui.CheckboxFlags("允許在這個生產日達到高峰的產品", ref mNewStrictness, (int)Strictness.AllowSameCycle);
+            ImGui.CheckboxFlags("允許在休息日達到高峰的產品", ref mNewStrictness, (int)Strictness.AllowRestCycles);
+            ImGui.CheckboxFlags("允許已在較早生產日達到高峰的產品", ref mNewStrictness, (int)Strictness.AllowEarlierCycles);
+            ImGui.CheckboxFlags("允許可能在其他生產日達到高峰的產品", ref mNewStrictness, (int)Strictness.AllowMultiCycle);
             var multi_disabled = (mNewStrictness & (int)Strictness.AllowMultiCycle) == 0;
             if (multi_disabled) ImGui.BeginDisabled();
             ImGui.Spacing(); ImGui.SameLine();
-            ImGui.CheckboxFlags("Maximum value: ", ref mNewStrictness, (int)Strictness.UseMultiCycleLimit);
+            ImGui.CheckboxFlags("數值上限：", ref mNewStrictness, (int)Strictness.UseMultiCycleLimit);
             ImGui.SameLine();
             var limit_disabled = (mNewStrictness & (int)Strictness.UseMultiCycleLimit) == 0;
             if (limit_disabled) ImGui.BeginDisabled();
@@ -110,17 +110,17 @@ internal class CommonInterfaceElements
             ImGui.InputInt("##Limit", ref mNewMultiCycleLimit, 1, 10);
             if (limit_disabled) ImGui.EndDisabled();
             if (multi_disabled) ImGui.EndDisabled();
-            ImGui.CheckboxFlags("Allow items that we don't know their peak cycle", ref mNewStrictness, (int)Strictness.AllowUnknownCycle);
+            ImGui.CheckboxFlags("允許還不知道高峰生產日的產品", ref mNewStrictness, (int)Strictness.AllowUnknownCycle);
             if (any_cycle) ImGui.EndDisabled();
-            ImGui.CheckboxFlags("Allow missing common materials", ref mNewStrictness, (int)Strictness.AllowMissingCommonMaterials);
-            ImGui.CheckboxFlags("Allow missing rare materials", ref mNewStrictness, (int)Strictness.AllowMissingRareMaterials);
+            ImGui.CheckboxFlags("允許缺少常見素材", ref mNewStrictness, (int)Strictness.AllowMissingCommonMaterials);
+            ImGui.CheckboxFlags("允許缺少稀少素材", ref mNewStrictness, (int)Strictness.AllowMissingRareMaterials);
             ImGui.Spacing();
-            if (ImGui.Button("Cancel"))
+            if (ImGui.Button("取消"))
             {
                 ImGui.CloseCurrentPopup();
             }
             ImGui.SameLine();
-            if (ImGui.Button("Defaults"))
+            if (ImGui.Button("預設"))
             {
                 if (mStrictness != mDefaultStrictness || mMultiCycleLimit != configuration.DefaultMultiCycleLimit)
                 {
@@ -131,7 +131,7 @@ internal class CommonInterfaceElements
                 ImGui.CloseCurrentPopup();
             }
             ImGui.SameLine();
-            if (ImGui.Button("Apply"))
+            if (ImGui.Button("套用"))
             {
                 if (mStrictness != (Strictness)mNewStrictness || mMultiCycleLimit != mNewMultiCycleLimit)
                 {
@@ -143,11 +143,11 @@ internal class CommonInterfaceElements
             }
             ImGui.EndPopup();
         }
-        if (UIUtils.ImageButton(icons.OptimizerSettings, "Optimizer Settings"))
+        if (UIUtils.ImageButton(icons.OptimizerSettings, "排程條件"))
         {
             mNewStrictness = (int)Strictness;
             mNewMultiCycleLimit = MultiCycleLimit;
-            ImGui.OpenPopup("Optimizer Settings");
+            ImGui.OpenPopup("排程條件");
         }
     }
 
@@ -164,7 +164,7 @@ internal class CommonInterfaceElements
             ImGui.BeginDisabled();
         }
         var mRestCycle = RestCycles[cycle];
-        if (ImGui.Checkbox("Rest Cycle", ref mRestCycle))
+        if (ImGui.Checkbox("休息日", ref mRestCycle))
         {
             if (uiDataSource.DataSource.CurrentRestCycles[cycle])
             {
