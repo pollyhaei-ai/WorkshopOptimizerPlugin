@@ -1,4 +1,3 @@
-using Dalamud.Interface.Internal;
 using Dalamud.Interface.Textures;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;

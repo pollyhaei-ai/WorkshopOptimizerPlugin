@@ -12,8 +12,8 @@ internal class MaterialsTab : ITab
     {
         if (ImGui.BeginTable("Materials", 2, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollY))
         {
-            ImGui.TableSetupColumn("Id");
-            ImGui.TableSetupColumn("Count");
+            ImGui.TableSetupColumn("素材");
+            ImGui.TableSetupColumn("持有數量");
             ImGui.TableHeadersRow();
 
             for (var i = 0; i < Material.MaxMaterials; i++)

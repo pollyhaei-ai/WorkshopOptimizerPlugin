@@ -79,16 +79,16 @@ internal class CombinationsTab : ITab, IUIDataSourceListener
         if (itemSets == null)
         {
             var adjProgress = Math.Floor(progress * 20) * 5;
-            ImGui.Text($"Calculating, please wait... {adjProgress:F0}%%");
+            ImGui.Text($"計算中，請稍候……{adjProgress:F0}%%");
         } else if (ImGui.BeginTable("Combinations", 7, ImGuiTableFlags.ScrollY | ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Items", ImGuiTableColumnFlags.WidthFixed, 600);
-            ImGui.TableSetupColumn("Patterns", ImGuiTableColumnFlags.WidthFixed, 150);
-            ImGui.TableSetupColumn("Hours", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.WidthFixed, 200);
-            ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 50);
-            ImGui.TableSetupColumn("Grooved Total", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Set", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("產品", ImGuiTableColumnFlags.WidthFixed, 700);
+            ImGui.TableSetupColumn("型態", ImGuiTableColumnFlags.WidthFixed, 180);
+            ImGui.TableSetupColumn("小時", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("產值", ImGuiTableColumnFlags.WidthFixed, 200);
+            ImGui.TableSetupColumn("合計", ImGuiTableColumnFlags.WidthFixed, 70);
+            ImGui.TableSetupColumn("含氣勢合計", ImGuiTableColumnFlags.WidthFixed, 120);
+            ImGui.TableSetupColumn("套用", ImGuiTableColumnFlags.WidthFixed, 160);
             ImGui.TableHeadersRow();
 
             var producedItems = ifData.IsCurrentSeason() ? uiDataSource.DataSource.CurrentProducedItems : uiDataSource.DataSource.PreviousProducedItems;
@@ -115,7 +115,7 @@ internal class CombinationsTab : ITab, IUIDataSourceListener
                 ImGui.TableNextColumn();
                 if (ifData.RestCycles[cycle])
                 {
-                    ImGui.Text("Resting");
+                    ImGui.Text("休息日");
                 }
                 else
                 {
@@ -132,7 +132,7 @@ internal class CombinationsTab : ITab, IUIDataSourceListener
                         }
                         ImGui.SameLine();
                     }
-                    if (ImGui.Button($"*###C-*-{top}"))
+                    if (ImGui.Button($"全###C-*-{top}"))
                     {
                         for (var w = 0; w < Constants.MaxWorkshops; w++)
                         {

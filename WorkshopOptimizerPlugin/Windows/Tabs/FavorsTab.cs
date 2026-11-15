@@ -26,13 +26,13 @@ internal class FavorsTab : ITab
         ImGui.Spacing();
         if (ImGui.BeginTable("Felicitous Favors Items", 7, ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Item");
-            ImGui.TableSetupColumn("Hours");
-            ImGui.TableSetupColumn("Needed");
-            ImGui.TableSetupColumn("Produced");
-            ImGui.TableSetupColumn("Popularity");
-            ImGui.TableSetupColumn("Cycles");
-            ImGui.TableSetupColumn("Require");
+            ImGui.TableSetupColumn("產品");
+            ImGui.TableSetupColumn("小時");
+            ImGui.TableSetupColumn("所需出口數");
+            ImGui.TableSetupColumn("已生產");
+            ImGui.TableSetupColumn("受歡迎度");
+            ImGui.TableSetupColumn("型態");
+            ImGui.TableSetupColumn("必須");
             ImGui.TableHeadersRow();
 
             for (var i = 0; i < Constants.MaxFelicitousFavors; i++)
@@ -79,7 +79,7 @@ internal class FavorsTab : ITab
                 ImGui.TableNextColumn();
                 ImGui.Text($"{done}");
                 ImGui.TableNextColumn();
-                ImGui.Text($"{selectedItem?.Popularity.ToString() ?? ""}");
+                ImGui.Text(selectedItem == null ? "" : Zh.Popularity(selectedItem.Popularity));
                 ImGui.TableNextColumn();
                 {
                     var patterns = selectedItem?.FindPatterns(cycle);
@@ -98,11 +98,11 @@ internal class FavorsTab : ITab
                 {
                     if (done >= needed)
                     {
-                        ImGui.Text("Done");
+                        ImGui.Text("已達成");
                     }
                     else if (uiDataSource.WhenOverrides[selectedItem.Id] == When.Required)
                     {
-                        if (ImGui.Button($"Defaults##Reset_{i}"))
+                        if (ImGui.Button($"恢復預設##Reset_{i}"))
                         {
                             uiDataSource.WhenOverrides[selectedItem.Id] = ItemStaticData.Get(selectedItem.Id).When;
                             uiDataSource.OptimizationParameterChanged();
@@ -110,7 +110,7 @@ internal class FavorsTab : ITab
                     }
                     else
                     {
-                        if (ImGui.Button($"Require##Require_{i}"))
+                        if (ImGui.Button($"必須##Require_{i}"))
                         {
                             uiDataSource.WhenOverrides[selectedItem.Id] = When.Required;
                             uiDataSource.OptimizationParameterChanged();

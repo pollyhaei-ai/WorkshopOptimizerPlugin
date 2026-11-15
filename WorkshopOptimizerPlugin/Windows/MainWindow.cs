@@ -21,7 +21,7 @@ public class MainWindow : Window, IDisposable
     private readonly List<Tuple<string, ITab>> tabs;
 
     public MainWindow(Plugin plugin) : base(
-        "Workshop Optimizer", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+        "開拓工坊排程", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         SizeConstraints = new WindowSizeConstraints
         {
@@ -41,15 +41,15 @@ public class MainWindow : Window, IDisposable
 
         tabs = new()
         {
-            new Tuple<string, ITab>("Workshops", new WorkshopsTab(uiDataSource, commonInterfaceElements, itemSetsCaches)),
-            new Tuple<string, ITab>("Produced", new ProducedTab(uiDataSource, commonInterfaceElements)),
-            new Tuple<string, ITab>("Next Week", new NextWeekTab(uiDataSource)),
-            new Tuple<string, ITab>("Items", new ItemsTab(plugin.Icons, uiDataSource, commonInterfaceElements)),
-            new Tuple<string, ITab>("Patterns", new PatternsTab(uiDataSource, commonInterfaceElements)),
-            new Tuple<string, ITab>("Combinations", new CombinationsTab(uiDataSource, commonInterfaceElements, itemSetsCaches)),
-            new Tuple<string, ITab>("Felicitous Favors", new FavorsTab(uiDataSource)),
+            new Tuple<string, ITab>("工坊", new WorkshopsTab(uiDataSource, commonInterfaceElements, itemSetsCaches)),
+            new Tuple<string, ITab>("生產計畫", new ProducedTab(uiDataSource, commonInterfaceElements)),
+            new Tuple<string, ITab>("下週期", new NextWeekTab(uiDataSource)),
+            new Tuple<string, ITab>("產品", new ItemsTab(plugin.Icons, uiDataSource, commonInterfaceElements)),
+            new Tuple<string, ITab>("供需型態", new PatternsTab(uiDataSource, commonInterfaceElements)),
+            new Tuple<string, ITab>("組合", new CombinationsTab(uiDataSource, commonInterfaceElements, itemSetsCaches)),
+            new Tuple<string, ITab>("貓耳小員的請求", new FavorsTab(uiDataSource)),
 #if DEBUG
-            new Tuple<string, ITab>("Materials", new MaterialsTab()),
+            new Tuple<string, ITab>("素材", new MaterialsTab()),
 #endif
         };
     }
@@ -93,13 +93,13 @@ public class MainWindow : Window, IDisposable
 
         var cycle = SeasonUtils.GetCycle();
         var rank = IslandProvider.GetIslandRank();
-        var str_rank = rank > 0 ? rank.ToString() : "unknown";
-        ImGui.Text($"Season: {uiDataSource.DataSource.SeasonStart:yyyy-MM-dd} - {uiDataSource.DataSource.SeasonStart.AddDays(Constants.MaxCycles):yyyy-MM-dd}. Cycle={cycle + 1}. Island Rank={str_rank}.");
+        var str_rank = rank > 0 ? rank.ToString() : "未知";
+        ImGui.Text($"週期：{uiDataSource.DataSource.SeasonStart:yyyy-MM-dd}～{uiDataSource.DataSource.SeasonStart.AddDays(Constants.MaxCycles):yyyy-MM-dd}。生產日={cycle + 1}。島嶼等級={str_rank}。");
         ImGui.SameLine();
         PopulateDataIfPossible();
 #if DEBUG
         ImGui.SameLine();
-        if (ImGui.Button("Reset"))
+        if (ImGui.Button("重置"))
         {
             uiDataSource.Reset(plugin.Configuration);
         }
@@ -107,7 +107,7 @@ public class MainWindow : Window, IDisposable
         ImGui.SameLine();
         var indent = ImGui.GetWindowWidth() - 45;
         ImGui.Indent(indent);
-        if (UIUtils.ImageButton(plugin.Icons.Settings, "Settings"))
+        if (UIUtils.ImageButton(plugin.Icons.Settings, "設定"))
         {
             plugin.OpenConfigUI();
         }
@@ -116,7 +116,7 @@ public class MainWindow : Window, IDisposable
 
         if (rank == 0)
         {
-            ImGui.TextColored(new Vector4(0.75f, 0, 0, 1), "Need to visit your island!");
+            ImGui.TextColored(new Vector4(0.75f, 0, 0, 1), "請先前往自己的無人島。");
             return;
         }
 
@@ -142,7 +142,7 @@ public class MainWindow : Window, IDisposable
             var manager = ManagerProvider.GetManager();
             if (!manager.IsValid)
             {
-                ImGui.TextColored(new Vector4(0.75f, 0, 0, 1), "Need to visit your island and open Demand & Supply!");
+                ImGui.TextColored(new Vector4(0.75f, 0, 0, 1), "請先前往自己的無人島，並打開「海島產品需求調查」。");
                 return;
             }
 

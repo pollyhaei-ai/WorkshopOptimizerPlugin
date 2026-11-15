@@ -42,15 +42,15 @@ internal class ItemsTab : ITab
 
         if (ImGui.BeginTable("Data", 9, ImGuiTableFlags.ScrollY | ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthFixed, 150);
-            ImGui.TableSetupColumn("Hours", ImGuiTableColumnFlags.WidthFixed, 50);
-            ImGui.TableSetupColumn("Popularity", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Supply", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Demand", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Cycles", ImGuiTableColumnFlags.WidthFixed, 350);
-            ImGui.TableSetupColumn("Base Value", ImGuiTableColumnFlags.WidthFixed, 80);
-            ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.WidthFixed, 80);
-            ImGui.TableSetupColumn("When to Use", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("產品", ImGuiTableColumnFlags.WidthFixed, 220);
+            ImGui.TableSetupColumn("小時", ImGuiTableColumnFlags.WidthFixed, 50);
+            ImGui.TableSetupColumn("受歡迎度", ImGuiTableColumnFlags.WidthFixed, 110);
+            ImGui.TableSetupColumn("目前市場需求", ImGuiTableColumnFlags.WidthFixed, 150);
+            ImGui.TableSetupColumn("此前需求變化", ImGuiTableColumnFlags.WidthFixed, 150);
+            ImGui.TableSetupColumn("型態", ImGuiTableColumnFlags.WidthFixed, 350);
+            ImGui.TableSetupColumn("基礎銷售價", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("產值", ImGuiTableColumnFlags.WidthFixed, 80);
+            ImGui.TableSetupColumn("使用時機", ImGuiTableColumnFlags.WidthFixed, 120);
             ImGui.TableHeadersRow();
 
             var itemCache = ifData.IsCurrentSeason() ? uiDataSource.CurrentItemCache : uiDataSource.PreviousItemCache;
@@ -68,23 +68,23 @@ internal class ItemsTab : ITab
                 ImGui.TableNextColumn();
                 ImGui.Text($"{item.Hours}");
                 ImGui.TableNextColumn();
-                ImGui.Text($"{item.Popularity}");
+                ImGui.Text(Zh.Popularity(item.Popularity));
                 ImGui.TableNextColumn();
                 if (item.Supply[cycle] != Supply.Unknown || patterns.Count != 1)
                 {
-                    ImGui.Text($"{item.Supply[cycle]}");
+                    ImGui.Text(Zh.Supply(item.Supply[cycle]));
                 }
                 else
                 {
-                    ImGui.Text($"{patterns[0].SupplyPattern[cycle]}*");
+                    ImGui.Text($"{Zh.Supply(patterns[0].SupplyPattern[cycle])}*");
                 }
                 ImGui.TableNextColumn();
                 if (item.Demand[cycle] != Demand.Unknown || patterns.Count != 1)
                 {
-                    ImGui.Text($"{item.Demand[cycle]}");
+                    ImGui.Text(Zh.Demand(item.Demand[cycle]));
                 } else
                 {
-                    ImGui.Text($"{patterns[0].DemandPattern[cycle]}*");
+                    ImGui.Text($"{Zh.Demand(patterns[0].DemandPattern[cycle])}*");
                 }
                 ImGui.TableNextColumn();
                 var spatterns = string.Join("/", patterns.ConvertAll(p => p.Name));
@@ -111,24 +111,24 @@ internal class ItemsTab : ITab
     {
         var indent = 780;
         ImGui.Indent(indent);
-        ImGui.Text("Set ");
+        ImGui.Text("將");
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(100);
-        ImGui.Combo("###SET_TYPE", ref mSetWhen, new string[]{"All", "Common", "Gatherables"}, 3);
+        ImGui.SetNextItemWidth(120);
+        ImGui.Combo("###SET_TYPE", ref mSetWhen, new string[]{"全部", "常見素材", "開拓素材"}, 3);
         Func<MaterialSource, bool>[] checkMaterials = {
             s => true,
             s => s == MaterialSource.Gatherable || s == MaterialSource.Crop || s == MaterialSource.Dropping,
             s => s == MaterialSource.Gatherable,
         };
         ImGui.SameLine();
-        ImGui.Text(" to ");
+        ImGui.Text("設為");
         ImGui.SameLine();
         ImGui.SetNextItemWidth(100);
         if (ImGui.BeginCombo("###SET_WHEN", ""))
         {
             foreach (var w in new When[] { When.Never, When.Weak, When.Strong, When.Either, When.Always, When.Required })
             {
-                if (ImGui.Selectable(w.ToString()))
+                if (ImGui.Selectable(Zh.When(w)))
                 {
                     for (uint i = 0; i < Constants.MaxItems; i++)
                     {
@@ -153,7 +153,7 @@ internal class ItemsTab : ITab
             ImGui.EndCombo();
         }
         ImGui.SameLine();
-        if (UIUtils.ImageButton(icons.ResetToDefaults, "Reset to defaults", hasWhenOverrides))
+        if (UIUtils.ImageButton(icons.ResetToDefaults, "恢復預設", hasWhenOverrides))
         {
             uiDataSource.WhenOverrides.Reset();
             for (uint i = 0; i < Constants.MaxItems; i++)

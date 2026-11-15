@@ -78,15 +78,15 @@ internal class WorkshopsTab : ITab, IUIDataSourceListener
         if (cWorkshopsItemSets == null)
         {
             var adjProgress = Math.Floor(progress * 20) * 5;
-            ImGui.Text($"Calculating, please wait... {adjProgress:F0}%%");
+            ImGui.Text($"計算中，請稍候……{adjProgress:F0}%%");
         } else if (ImGui.BeginTable("Workshop Combinations", 6, ImGuiTableFlags.ScrollY | ImGuiTableFlags.RowBg))
         {
-            ImGui.TableSetupColumn("Items", ImGuiTableColumnFlags.WidthFixed, 600);
-            ImGui.TableSetupColumn("Patterns", ImGuiTableColumnFlags.WidthFixed, 200);
-            ImGui.TableSetupColumn("Hours", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Groove", ImGuiTableColumnFlags.WidthFixed, 100);
-            ImGui.TableSetupColumn("Set", ImGuiTableColumnFlags.WidthFixed, 200);
+            ImGui.TableSetupColumn("產品", ImGuiTableColumnFlags.WidthFixed, 700);
+            ImGui.TableSetupColumn("型態", ImGuiTableColumnFlags.WidthFixed, 220);
+            ImGui.TableSetupColumn("小時", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("合計", ImGuiTableColumnFlags.WidthFixed, 100);
+            ImGui.TableSetupColumn("氣勢", ImGuiTableColumnFlags.WidthFixed, 140);
+            ImGui.TableSetupColumn("套用", ImGuiTableColumnFlags.WidthFixed, 200);
             ImGui.TableHeadersRow();
 
             var top = ifData.Top;
@@ -115,17 +115,17 @@ internal class WorkshopsTab : ITab, IUIDataSourceListener
                 ImGui.Text(string.Format("{0:F2}", workshopsItemSets.EffectiveValue));
                 ImGui.TableNextColumn();
                 ImGui.Text("");
-                ImGui.Text(string.Format("Groove: {0} -> {1}", startGroove, workshopsItemSets.EndGroove));
+                ImGui.Text(string.Format("氣勢：{0} → {1}", startGroove, workshopsItemSets.EndGroove));
                 ImGui.TableNextColumn();
                 ImGui.Text("");
                 if (ifData.RestCycles[cycle])
                 {
-                    ImGui.Text("Resting");
+                    ImGui.Text("休息日");
                 }
                 else
                 {
                     if (disabled) { ImGui.BeginDisabled(); }
-                    if (ImGui.Button($"*###WC-*-{top}"))
+                    if (ImGui.Button($"全###WC-*-{top}"))
                     {
                         for (var w = 0; w < Constants.MaxWorkshops; w++)
                         {
