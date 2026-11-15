@@ -4,6 +4,7 @@ internal_name: WorkshopOptimizerPlugin
 dalamud_api_level: 13
 description: |-
   到自己的無人島，打開工坊生產計畫或海島產品需求調查後輸入 /wso。
+  成週排程可一次排好五個工作日與兩個休息日。
   這個組建給台灣版用戶端：yanmucorp Dalamud API 13、.NET 9、XIVTCLauncher。
   不要裝到官方 Dalamud API 14／15。
   上游是 belzaru17/WorkshopOptimizerPlugin，作者 HappySprite。本分支為 pollyhaei-ai/WorkshopOptimizerPlugin。

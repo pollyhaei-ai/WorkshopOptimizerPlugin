@@ -23,12 +23,14 @@ internal class OptimizerOptions
     public readonly int MultiCycleLimit;
     public readonly IReadOnlyList<bool> RestCycles;
     public readonly int ItemGenerationCutoff;
+    public readonly IReadOnlyDictionary<uint, int>? ReservedMaterials;
 
-    public OptimizerOptions(Configuration configuration, Strictness strictness, int multiCycleLmit, IReadOnlyList<bool> restCycles)
+    public OptimizerOptions(Configuration configuration, Strictness strictness, int multiCycleLmit, IReadOnlyList<bool> restCycles, IReadOnlyDictionary<uint, int>? reservedMaterials = null)
     {
         Strictness = strictness;
         MultiCycleLimit = multiCycleLmit;
         RestCycles = restCycles;
         ItemGenerationCutoff = configuration.ItemGenerationCutoff;
+        ReservedMaterials = reservedMaterials;
     }
 }

@@ -1,5 +1,6 @@
 using Dalamud.Bindings.ImGui;
 using System;
+using System.Numerics;
 using WorkshopOptimizerPlugin.Data;
 using WorkshopOptimizerPlugin.Utils;
 using WorkshopOptimizerPlugin.Windows.Utils;
@@ -38,6 +39,8 @@ internal class ItemsTab : ITab
         var cycle = ifData.Cycle;
         ImGui.SameLine();
         DrawActionsBar();
+        ImGui.Spacing();
+        DrawCollectionHint(cycle);
         ImGui.Spacing();
 
         if (ImGui.BeginTable("Data", 9, ImGuiTableFlags.ScrollY | ImGuiTableFlags.RowBg))
@@ -104,6 +107,32 @@ internal class ItemsTab : ITab
                 if (disabled) { ImGui.EndDisabled(); }
             }
             ImGui.EndTable();
+        }
+    }
+
+    private void DrawCollectionHint(int cycle)
+    {
+        if (!ifData.IsCurrentSeason())
+        {
+            return;
+        }
+
+        var today = SeasonUtils.GetCycle();
+        var times = uiDataSource.DataSource.DataCollectionTime;
+        var viewingCollected = times[cycle] != null;
+        if (viewingCollected && cycle == today)
+        {
+            ImGui.TextColored(new Vector4(0.45f, 0.8f, 0.45f, 1), "「目前市場需求」與「此前需求變化」是今天從海島產品需求調查讀到的。標 * 的是預測。");
+            return;
+        }
+        if (times[today] != null && cycle != today)
+        {
+            ImGui.TextColored(new Vector4(0.9f, 0.75f, 0.2f, 1), $"第{today + 1}日已收集。把生產日調回第{today + 1}日，就能看到今天的目前市場需求與此前需求變化。");
+            return;
+        }
+        if (!viewingCollected)
+        {
+            ImGui.Text("此日若還沒收集，供需標 * 的是預測。");
         }
     }
 

@@ -3,7 +3,7 @@ using WorkshopOptimizerPlugin.Persistence.Internal;
 
 namespace WorkshopOptimizerPlugin.Persistence;
 
-internal class ProducedItemsAdaptor
+internal class ProducedItemsAdaptor : IProducedCounter
 {
     public ProducedItemsAdaptor(PersistentSeasonData data)
     {

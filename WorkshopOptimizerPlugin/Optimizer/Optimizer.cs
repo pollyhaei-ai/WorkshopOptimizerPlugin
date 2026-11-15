@@ -21,6 +21,7 @@ internal class Optimizer
     private readonly int[] wci;
     private readonly List<WorkshopsItemSets> cachedWorkshopCombinations;
     private bool workshopCombinationsDone;
+    private bool workshopCursorReady;
 
     public Optimizer(ItemCache itemCache, int cycle, Groove groove, OptimizerOptions options)
     {
@@ -81,6 +82,78 @@ internal class Optimizer
         return (cachedCombinations, 1.0);
     }
 
+    public bool IsCombinationsDone => combinationsDone;
+
+    public bool IsWorkshopsDone => workshopCombinationsDone;
+
+    public IReadOnlyList<WorkshopsItemSets> WorkshopResults => cachedWorkshopCombinations;
+
+    public double StepCombinations()
+    {
+        var (_, progress) = GenerateCombinations();
+        return progress;
+    }
+
+    public double StepWorkshops(int budget)
+    {
+        if (!combinationsDone)
+        {
+            var (_, progress) = GenerateCombinations();
+            return progress * 0.5;
+        }
+        if (workshopCombinationsDone)
+        {
+            return 1;
+        }
+
+        var cutoff = options.ItemGenerationCutoff;
+        if (cutoff > cachedCombinations.Count)
+        {
+            cutoff = cachedCombinations.Count;
+        }
+        if (cutoff <= 0)
+        {
+            workshopCombinationsDone = true;
+            return 1;
+        }
+
+        var end = cutoff - 1;
+        if (!workshopCursorReady)
+        {
+            for (var i = 0; i < Constants.MaxWorkshops; i++)
+            {
+                wci[i] = 0;
+            }
+            workshopCursorReady = true;
+        }
+
+        var added = 0;
+        while (added < budget && !workshopCombinationsDone)
+        {
+            var sets = new ItemSet[Constants.MaxWorkshops];
+            for (var w = 0; w < Constants.MaxWorkshops; w++)
+            {
+                sets[w] = cachedCombinations[wci[w]];
+            }
+            cachedWorkshopCombinations.Add(new WorkshopsItemSets(sets, cycle, groove));
+            added++;
+            if (!AdvanceWorkshopCursor(end))
+            {
+                cachedWorkshopCombinations.Sort((x, y) => y.EffectiveValue.CompareTo(x.EffectiveValue));
+                workshopCombinationsDone = true;
+            }
+        }
+
+        if (workshopCombinationsDone)
+        {
+            return 1;
+        }
+
+        var total = CombinationCount(cutoff, Constants.MaxWorkshops);
+        var fraction = total <= 0 ? 1.0 : (double)cachedWorkshopCombinations.Count / total;
+        return 0.5 + (0.5 * fraction);
+    }
+
     public (List<WorkshopsItemSets>?, double) GenerateAllWorkshops()
     {
         if (workshopCombinationsDone)
@@ -101,6 +174,37 @@ internal class Optimizer
         cachedWorkshopCombinations.Sort((x, y) => y.EffectiveValue.CompareTo(x.EffectiveValue));
         workshopCombinationsDone = true;
         return (cachedWorkshopCombinations, 1.0);
+    }
+
+    private bool AdvanceWorkshopCursor(int end)
+    {
+        for (var w = Constants.MaxWorkshops - 1; w >= 0; w--)
+        {
+            if (wci[w] < end)
+            {
+                var next = wci[w] + 1;
+                for (var j = w; j < Constants.MaxWorkshops; j++)
+                {
+                    wci[j] = next;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int CombinationCount(int n, int k)
+    {
+        if (n <= 0 || k <= 0)
+        {
+            return 0;
+        }
+        long result = 1;
+        for (var i = 1; i <= k; i++)
+        {
+            result = result * (n + k - i) / i;
+        }
+        return (int)result;
     }
 
     private void generateAllWorkshopsRecursive(List<ItemSet> combinations, int workshop, int start, int end)
@@ -200,7 +304,12 @@ internal class Optimizer
         foreach (var material in item.Materials)
         {
             var option = (material.Material.Source == MaterialSource.Gatherable) ? Strictness.AllowMissingCommonMaterials : Strictness.AllowMissingRareMaterials;
-            if ((options.Strictness & option) == 0 && InventoryProvider.GetItemCount(material.Material) < material.Count)
+            var reserved = 0;
+            if (options.ReservedMaterials != null && options.ReservedMaterials.TryGetValue(material.Material.Id, out var reservedAmount))
+            {
+                reserved = reservedAmount;
+            }
+            if ((options.Strictness & option) == 0 && InventoryProvider.GetItemCount(material.Material) < material.Count + reserved)
             {
                 return false;
             }

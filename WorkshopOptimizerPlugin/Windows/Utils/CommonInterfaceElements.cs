@@ -186,6 +186,12 @@ internal class CommonInterfaceElements
         }
     }
 
+    public void SetCycle(int cycle)
+    {
+        mCycle = cycle + 1;
+        UIUtils.FixValue(ref mCycle, 1, 7);
+    }
+
     public void NextCycle()
     {
         mCycle++;

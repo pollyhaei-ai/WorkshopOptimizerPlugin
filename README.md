@@ -16,7 +16,15 @@ FFXIV Island Sanctuary workshop optimizer.
 
 型態寫成「第2日弱」「第3日強」：數字是高峰落在第幾個生產日，弱代表供給會到「供少於求」，強代表會到「嚴重供少於求」。標了 `*` 的供需是預測。
 
-測試用壓縮檔是 `dist/WorkshopOptimizerPlugin-0.3.2-tw.zip`。裡面的 `WorkshopOptimizerPlugin` 資料夾放到 Dalamud 的 devPlugins，在遊戲裡啟用。這個組建只給 API 13，不要裝到官方 Dalamud API 14 或 15。
+# 成週排程
+
+1. 到自己的無人島，打開「海島產品需求調查」，再輸入 `/wso`。
+2. 打開「成週排程」。它會排五個工作日和兩個休息日。休息日預設沿用設定裡的兩個休息日（一開始是第1日和第5日）。
+3. 把整週套用到「生產計畫」，再照著填進遊戲內的工坊生產計畫。外掛不會改遊戲裡的排程。
+4. 這是預測。其他玩家的出貨也會改變世界供給。若之後打開「海島產品需求調查」發現數值不同，請重新計算還沒過的日子。
+5. 第1日到第4日都收集過最準，但更早也可以先排，預測會標 `*`，並提示後面還不準。已經過的生產日，遊戲不會把當天供需補回來。
+
+測試用壓縮檔是 `dist/WorkshopOptimizerPlugin-0.3.3-tw.zip`。裡面的 `WorkshopOptimizerPlugin` 資料夾放到 Dalamud 的 devPlugins，在遊戲裡啟用。這個組建只給 API 13，不要裝到官方 Dalamud API 14 或 15。
 
 # Usage
 

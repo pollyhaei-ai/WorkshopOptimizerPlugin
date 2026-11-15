@@ -14,6 +14,20 @@ internal enum Supply
 
 internal static class SupplyUtils
 {
+    public static Supply Advance(Supply s, int produced)
+    {
+        if (produced <= 0)
+        {
+            return s;
+        }
+        var steps = produced / SupplyAdjustmentBucket;
+        for (var i = 0; i < steps; i++)
+        {
+            s = NextSupply[(int)s];
+        }
+        return s;
+    }
+
     public static double Multiplier(Supply s, int produced = 0)
     {
         for (; produced >= SupplyAdjustmentBucket; produced -= SupplyAdjustmentBucket)
