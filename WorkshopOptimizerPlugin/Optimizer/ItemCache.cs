@@ -5,7 +5,7 @@ namespace WorkshopOptimizerPlugin.Optimizer;
 
 internal class ItemCache
 {
-    public ItemCache(DynamicDataAdaptor dynamicData, ProducedItemsAdaptor producedItems, WhenOverrides whenOverrides)
+    public ItemCache(DynamicDataAdaptor dynamicData, IProducedCounter producedItems, WhenOverrides whenOverrides)
     {
         this.dynamicData = dynamicData;
         this.producedItems = producedItems;
@@ -31,7 +31,7 @@ internal class ItemCache
     }
 
     private readonly DynamicDataAdaptor dynamicData;
-    private readonly ProducedItemsAdaptor producedItems;
+    private readonly IProducedCounter producedItems;
     private readonly WhenOverrides whenOverrides;
     private readonly Item[] items;
 }

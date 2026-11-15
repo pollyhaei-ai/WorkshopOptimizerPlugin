@@ -42,6 +42,7 @@ public class MainWindow : Window, IDisposable
         tabs = new()
         {
             new Tuple<string, ITab>("工坊", new WorkshopsTab(uiDataSource, commonInterfaceElements, itemSetsCaches)),
+            new Tuple<string, ITab>("成週排程", new WeekPlanTab(uiDataSource, commonInterfaceElements, plugin.Configuration)),
             new Tuple<string, ITab>("生產計畫", new ProducedTab(uiDataSource, commonInterfaceElements)),
             new Tuple<string, ITab>("下週期", new NextWeekTab(uiDataSource)),
             new Tuple<string, ITab>("產品", new ItemsTab(plugin.Icons, uiDataSource, commonInterfaceElements)),
@@ -147,13 +148,16 @@ public class MainWindow : Window, IDisposable
             }
 
             PopulateJsonData(manager);
-
-            if (commonInterfaceElements.Cycle == cycle)
-            {
-                commonInterfaceElements.NextCycle();
-            }
         }
-        ImGui.Text("");
+
+        if (uiDataSource.DataSource.DataCollectionTime[cycle] != null)
+        {
+            ImGui.TextColored(new Vector4(0.45f, 0.8f, 0.45f, 1), $"已讀取第{cycle + 1}日海島產品需求調查。");
+        }
+        else
+        {
+            ImGui.Text("");
+        }
     }
 
     private void PopulateJsonData(Manager manager)
